@@ -10,6 +10,7 @@ class AddTodoListPage extends StatefulWidget {
 }
 
 class _AddTodoListPageState extends State<AddTodoListPage> {
+  final formKey = GlobalKey<FormState>();
   String title = '';
   DateTime _date = DateTime.now();
   TextEditingController _dateController = TextEditingController();
@@ -30,6 +31,7 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 80.0),
             child: Form(
+              key: formKey,
                 child: Column(
                   children: <Widget>[
                     Padding(
@@ -73,11 +75,11 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                         ),
                         child: FlatButton(
                             onPressed: () {
-                              this.title = this.titleController.text;
-                              print('$title, $_date');         //확인용
-
-
-                              Navigator.pop(context);          // 버튼 클릭시 화면에서 빠져 나옵니다.
+                              if(formKey.currentState!.validate()){
+                                this.title = this.titleController.text;
+                                print('$title, $_date');         //확인용
+                                Navigator.pop(context);          // 버튼 클릭시 화면에서 빠져 나옵니다.
+                              }
                             },
                             child: Text(
                               'ADD',
