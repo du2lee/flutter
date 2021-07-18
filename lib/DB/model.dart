@@ -1,4 +1,4 @@
-final String tableName = 'plan';              //https://pub.dev/packages/sqflite
+//https://pub.dev/packages/sqflite
 final String columnId = 'id';
 final String columnTitle = 'title';
 final String columnDate = 'date';
