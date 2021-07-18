@@ -45,7 +45,7 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                         validator: (input) => input!.trim().isEmpty
                             ? 'Please enter a task'
                             : null,
-                        onChanged: (String title) {
+                        onChanged: (String title) {             //text 변경시 title변수에 입력값이 들어갑니다.
                           this.title = title;
                         },
                       ),
@@ -53,8 +53,9 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                     Padding(
                       padding: EdgeInsets.symmetric(vertical: 20),
                       child: TextFormField(
+                        readOnly: true,                       //datePicker에서 지정한 날짜만 표시하기 위해 읽기전용으로 설정하였습니다.
                         controller: _dateController, //date
-                        onTap: _handleDatePicker,
+                        onTap: _handleDatePicker,             //date 부분 클릭시 datePicker가 열립니다.
                         style: TextStyle(fontSize: 18.0),
                         decoration: InputDecoration(
                             labelText: 'Date',
@@ -76,7 +77,7 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                             onPressed: () {
                               if (formKey.currentState!.validate()) {
                                 print('$title, $_date');         //확인용
-                                Navigator.pop(context);
+                                Navigator.pop(context);          // 버튼 클릭시 화면에서 빠져 나옵니다.
                               }
                             },
                             child: Text(
