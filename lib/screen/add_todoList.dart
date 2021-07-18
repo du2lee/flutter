@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:todolist/DB/db.dart';
+import 'package:todolist/DB/model.dart';
 
 
 class AddTodoListPage extends StatefulWidget {
@@ -73,6 +75,8 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                             onPressed: () {
                               this.title = this.titleController.text;
                               print('$title, $_date');         //확인용
+
+
                               Navigator.pop(context);          // 버튼 클릭시 화면에서 빠져 나옵니다.
                             },
                             child: Text(
@@ -100,5 +104,11 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
       });
       _dateController.text = _dateFormatter.format(date);
     }
+  }
+
+  Future<void> insert() async{
+    var provider = DBHelper();
+    var plan = Plan(title: this.title, date: this._date.toString());
+    provider.insert(plan);
   }
 }

@@ -2,9 +2,9 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:todolist/DB/model.dart';
 
-final String tableName = 'Plan';
+final String tableName = 'Plans';
 
-class DbHelper{
+class DBHelper{
   late Database db;
 
   Future<Database> get database async{
@@ -28,7 +28,7 @@ class DbHelper{
 
   Future<Plan> insert(Plan plan) async{
     final db = await database;
-    plan.id= await db.insert(tableName, plan.toMap());
+    plan.id = await db.insert(tableName, plan.toMap());
     return plan;
   }
 

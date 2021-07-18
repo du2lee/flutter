@@ -4,11 +4,11 @@ final String columnTitle = 'title';
 final String columnDate = 'date';
 
 class Plan{
-  late final int id;
+  late final int? id;
   late final String title;
   late final String date;
 
-  Plan({required this.id, required this.title, required this.date});     
+  Plan({this.id, required this.title, required this.date});     
 
   Map<String, dynamic> toMap(){
     var map =  {
