@@ -5,9 +5,9 @@ import 'package:todolist/DB/model.dart';
 final String tableName = 'Plans';
 
 class DBHelper{
-  late Database db;
+  Database? db;
 
-  Future<Database> get database async{
+  Future<Database?> get database async{
     if(db != null) return db;
 
     db = await initDB();
@@ -28,7 +28,7 @@ class DBHelper{
 
   Future<Plan> insert(Plan plan) async{
     final db = await database;
-    plan.id = await db.insert(tableName, plan.toMap());
+    plan.id = await db!.insert(tableName, plan.toMap());
     return plan;
   }
 
