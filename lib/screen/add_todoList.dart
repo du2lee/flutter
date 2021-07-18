@@ -8,11 +8,10 @@ class AddTodoListPage extends StatefulWidget {
 }
 
 class _AddTodoListPageState extends State<AddTodoListPage> {
-  final formKey = GlobalKey<FormState>();
   String title = '';
-  String dateString = '';
   DateTime _date = DateTime.now();
   TextEditingController _dateController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
   final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
 
   @override
@@ -29,7 +28,6 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 40.0, vertical: 80.0),
             child: Form(
-
                 child: Column(
                   children: <Widget>[
                     Padding(
@@ -45,9 +43,7 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                         validator: (input) => input!.trim().isEmpty
                             ? 'Please enter a task'
                             : null,
-                        onChanged: (String title) {             //text 변경시 title변수에 입력값이 들어갑니다.
-                          this.title = title;
-                        },
+                        controller: titleController,
                       ),
                     ),
                     Padding(
@@ -75,10 +71,9 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                         ),
                         child: FlatButton(
                             onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                print('$title, $_date');         //확인용
-                                Navigator.pop(context);          // 버튼 클릭시 화면에서 빠져 나옵니다.
-                              }
+                              this.title = this.titleController.text;
+                              print('$title, $_date');         //확인용
+                              Navigator.pop(context);          // 버튼 클릭시 화면에서 빠져 나옵니다.
                             },
                             child: Text(
                               'ADD',
