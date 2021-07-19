@@ -1,30 +1,34 @@
-//https://pub.dev/packages/sqflite
-final String columnId = 'id';
-final String columnTitle = 'title';
-final String columnDate = 'date';
+final String tableName = 'plans';
+
+class PlanFields {
+  static final String id = '_id';
+  static final String title = 'title';
+  static final String date = 'date';
+}
 
 class Plan{
-  late int id;
-  late String title;
-  late String date;
+  final int? id;
+  final String title;
+  final String date;
 
-  Plan({required this.id, required this.title, required this.date});     
+  const Plan({this.id, required this.title, required this.date});
 
-  Map<String, dynamic> toMap(){
-    var map =  {
-      columnTitle : title,
-      columnDate : date,
-    };
-    if (id != null){
-      map[columnId] = id as String;
-    }
-    return map;
-  }
+  Plan copy({
+    int? id,
+    String? title = 'title',
+    String? date = 'date',
+  }) =>
+      Plan(
+        id: id ?? this.id,
+        title: title ?? this.title,
+        date: date ?? this.date,
+      );
 
-  Plan.fromMap(Map<String, dynamic> map){
-    id = map[columnId];
-    title = map[columnTitle];
-    date = map[columnDate];
-  }
+  Map<String, Object?> toJson() => {
+    PlanFields.id: id,
+    PlanFields.title: title,
+    PlanFields.date: date,
+
+  };
 
 }
