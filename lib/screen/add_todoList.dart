@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:todolist/DB/db.dart';
 import 'package:todolist/DB/model.dart';
 
 
@@ -13,9 +12,10 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
   final formKey = GlobalKey<FormState>();
   String title = '';
   DateTime _date = DateTime.now();
-  TextEditingController _dateController = TextEditingController();
-  TextEditingController titleController = TextEditingController();
+ 
   final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
+  TextEditingController _dateController = TextEditingController(text: DateFormat('MMM dd, yyyy').format(DateTime.now()));
+  TextEditingController titleController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,6 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                               if(formKey.currentState!.validate()){
                                 this.title = this.titleController.text;
                                 print('$title, $_date');         //확인용
-                                // insert();
                                 Navigator.pop(context);          // 버튼 클릭시 화면에서 빠져 나옵니다.
                               }
                             },
@@ -109,9 +108,4 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
     }
   }
 
-  // Future<void> insert() async{
-  //   var provider = DBHelper();
-  //   var plan = Plan(title: this.title, date: this._date.toString());
-  //   provider.insert(plan);
-  // }
 }
