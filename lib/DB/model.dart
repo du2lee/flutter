@@ -4,9 +4,9 @@ final String columnTitle = 'title';
 final String columnDate = 'date';
 
 class Plan{
-  late final int? id;
-  late final String title;
-  late final String date;
+  final int? id;
+  final String title;
+  final String date;
 
   Plan({this.id, required this.title, required this.date});     
 
@@ -21,10 +21,10 @@ class Plan{
     return map;
   }
 
-  Plan.fromMap(Map<String, dynamic> map){
-    id = map[columnId];
-    title = map[columnTitle];
-    date = map[columnDate];
-  }
+  // Plan.fromMap(Map<String, dynamic> map){
+  //   id = map[columnId];
+  //   title = map[columnTitle];
+  //   date = map[columnDate];
+  // }
 
 }

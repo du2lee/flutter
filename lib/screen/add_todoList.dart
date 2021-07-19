@@ -78,7 +78,7 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                               if(formKey.currentState!.validate()){
                                 this.title = this.titleController.text;
                                 print('$title, $_date');         //확인용
-                                insert();
+                                // insert();
                                 Navigator.pop(context);          // 버튼 클릭시 화면에서 빠져 나옵니다.
                               }
                             },
@@ -109,9 +109,9 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
     }
   }
 
-  Future<void> insert() async{
-    var provider = DBHelper();
-    var plan = Plan(title: this.title, date: this._date.toString());
-    provider.insert(plan);
-  }
+  // Future<void> insert() async{
+  //   var provider = DBHelper();
+  //   var plan = Plan(title: this.title, date: this._date.toString());
+  //   provider.insert(plan);
+  // }
 }
