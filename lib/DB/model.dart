@@ -4,11 +4,11 @@ final String columnTitle = 'title';
 final String columnDate = 'date';
 
 class Plan{
-  final int? id;
-  final String title;
-  final String date;
+  late int id;
+  late String title;
+  late String date;
 
-  Plan({this.id, required this.title, required this.date});     
+  Plan({required this.id, required this.title, required this.date});     
 
   Map<String, dynamic> toMap(){
     var map =  {
@@ -21,10 +21,10 @@ class Plan{
     return map;
   }
 
-  // Plan.fromMap(Map<String, dynamic> map){
-  //   id = map[columnId];
-  //   title = map[columnTitle];
-  //   date = map[columnDate];
-  // }
+  Plan.fromMap(Map<String, dynamic> map){
+    id = map[columnId];
+    title = map[columnTitle];
+    date = map[columnDate];
+  }
 
 }
