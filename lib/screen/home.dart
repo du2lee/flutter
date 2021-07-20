@@ -1,9 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todolist/screen/add_todoList.dart';
 import 'package:todolist/screen/important_todoList.dart';
-import 'package:todolist/screen/list.dart';
 
-class TodoListPage extends StatelessWidget {
+class TodoList extends StatefulWidget {
+  @override
+  _TodoListState createState() => _TodoListState();
+}
+
+class _TodoListState extends State<TodoList> {
+  List todoList = [];
+
+  void delete(int index) {
+    setState(() {
+      todoList.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,15 +39,53 @@ class TodoListPage extends StatelessWidget {
               icon: Icon(Icons.star))
         ],
       ),
-      body: TodoList(),
+      body: ListView.builder(
+          itemCount: todoList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return Center(
+                child: Slidable(
+              actionPane: SlidableDrawerActionPane(),
+              actionExtentRatio: 0.25,
+              child: ListTile(
+                leading: Icon(
+                  Icons.star,
+                  color: Colors.yellowAccent[400],
+                ),
+                title: Text(todoList[index].toString(),
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                subtitle: Text('MM DD, YYYY'),
+              ),
+              secondaryActions: <Widget>[
+                IconSlideAction(
+                  caption: 'edit',
+                  color: Colors.grey.shade200,
+                  icon: Icons.edit,
+                  onTap: () => {},
+                  closeOnTap: false,
+                ),
+                IconSlideAction(
+                  caption: 'delete',
+                  color: Colors.red,
+                  icon: Icons.delete,
+                  onTap: () => delete(index),
+                ),
+              ],
+            ));
+          }),
       floatingActionButton: FloatingActionButton(
           backgroundColor: Theme.of(context).primaryColor,
           child: Icon(Icons.add),
-          onPressed: () {
-            //floatbutton눌렀을 때 addplan 창으로 넘어가는거 코딩 잘했는지 확인해주세요
-            Navigator.of(context).push(MaterialPageRoute(builder: (context) {
-              return AddTodoListPage();
-            }));
+          onPressed: () async {
+            var addText = await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddTodoListPage()),
+            );
+            if (addText != null) {
+              setState(() {
+                todoList.add(addText);
+              });
+            }
           }),
     );
   }
