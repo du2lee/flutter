@@ -10,11 +10,13 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> {
-  List todoList = [];
+  List<String> todoListTitle = [];
+  List<String> todoListDate = [];
 
   void delete(int index) {
     setState(() {
-      todoList.removeAt(index);
+      todoListTitle.removeAt(index);
+      todoListDate.removeAt(index);
     });
   }
 
@@ -37,9 +39,9 @@ class _TodoListState extends State<TodoList> {
               icon: Icon(Icons.star))
         ],
       ),
-      body: todoList.length > 0
+      body: todoListTitle.length > 0
           ? ListView.builder(
-              itemCount: todoList.length,
+              itemCount: todoListTitle.length,
               itemBuilder: (BuildContext context, int index) {
                 return Slidable(
                   actionPane: SlidableDrawerActionPane(),
@@ -49,10 +51,10 @@ class _TodoListState extends State<TodoList> {
                       Icons.star,
                       color: Colors.yellowAccent[400],
                     ),
-                    title: Text(todoList[index].toString(),
+                    title: Text(todoListTitle[index],
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.bold)),
-                    subtitle: Text('MM DD, YYYY'),
+                    subtitle: Text(todoListDate[index]),
                   ),
                   secondaryActions: <Widget>[
                     IconSlideAction(
@@ -89,7 +91,8 @@ class _TodoListState extends State<TodoList> {
             var addText = await Get.toNamed('/add', arguments: true);
             if (addText != null) {
               setState(() {
-                todoList.add(addText);
+                todoListTitle.add(addText['title']);
+                todoListDate.add(addText['date']);
               });
             }
           }),

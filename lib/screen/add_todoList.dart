@@ -84,8 +84,8 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
                               Get.back(result: {
-                                titleController.text,
-                                _dateController.text
+                                'title': titleController.text,
+                                'date' :_dateController.text
                               });
                             }
                           },
