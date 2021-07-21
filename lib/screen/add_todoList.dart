@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class AddTodoListPage extends StatefulWidget {
-
+  bool flag = Get.arguments;
   @override
   _AddTodoListPageState createState() => _AddTodoListPageState();
 }
@@ -27,7 +28,8 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-            title: Text('Add Plan',
+            title: Text(
+              widget.flag ? 'Add Plan': 'Edit Plan',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24.0,
@@ -49,9 +51,8 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                           labelStyle: TextStyle(fontSize: 18.0),
                           border: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0))),
-                      validator: (input) => input!.trim().isEmpty
-                          ? 'Please enter a task'
-                          : null,
+                      validator: (input) =>
+                          input!.trim().isEmpty ? 'Please enter a task' : null,
                       controller: titleController,
                     ),
                   ),
@@ -61,8 +62,7 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                       readOnly:
                           true, //datePicker에서 지정한 날짜만 표시하기 위해 읽기전용으로 설정하였습니다.
                       controller: _dateController, //date
-                      onTap:
-                          _handleDatePicker, //date 부분 클릭시 datePicker가 열립니다.
+                      onTap: _handleDatePicker, //date 부분 클릭시 datePicker가 열립니다.
                       style: TextStyle(fontSize: 18.0),
                       decoration: InputDecoration(
                           labelText: 'Date',
@@ -82,10 +82,15 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                       ),
                       child: FlatButton(
                           onPressed: () {
-                            Navigator.pop(context,{titleController.text,_dateController.text} );
+                            if (formKey.currentState!.validate()) {
+                              Get.back(result: {
+                                titleController.text,
+                                _dateController.text
+                              });
+                            }
                           },
                           child: Text(
-                            'ADD',
+                            widget.flag ?'ADD':'EDIT',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20.0,
