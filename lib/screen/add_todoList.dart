@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:todolist/controller/controller.dart';
 
 class AddTodoListPage extends StatefulWidget {
   bool flag = Get.arguments;
@@ -13,7 +14,7 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
   DateTime _date = DateTime.now();
 
   final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
-  TextEditingController _dateController = TextEditingController(
+  final TextEditingController _dateController = TextEditingController(
       text: DateFormat('MMM dd, yyyy').format(DateTime.now()));
   TextEditingController titleController = TextEditingController();
 
@@ -83,10 +84,8 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                       child: FlatButton(
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
-                              Get.back(result: {
-                                'title': titleController.text,
-                                'date' :_dateController.text
-                              });
+                              Get.find<Controller>().add(titleController.text, _dateController.text);
+                              Get.back();
                             }
                           },
                           child: Text(
@@ -102,7 +101,7 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
   }
 
   _handleDatePicker() async {
-    final DateTime? date = await showDatePicker(
+    final date = await showDatePicker(
         context: context,
         initialDate: _date,
         firstDate: DateTime(2000),

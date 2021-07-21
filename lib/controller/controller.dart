@@ -4,9 +4,14 @@ class Controller extends GetxController {
   List<String> todoListTitle = [];
   List<String> todoListDate = [];
 
-  void add(addText){
-    todoListTitle.add(addText['title']);
-    todoListDate.add(addText['date']);
+  List<String> get getTitle => todoListTitle;
+  List<String> get getDate => todoListDate;
+
+  int get getListSize => todoListTitle.length;
+
+  void add(String title,String date){
+    todoListTitle.add(title);
+    todoListDate.add(date);
     update();
   }
 }

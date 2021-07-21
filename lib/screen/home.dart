@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
-import 'package:todolist/screen/add_todoList.dart';
-import 'package:todolist/screen/important_todoList.dart';
+import 'package:todolist/controller/controller.dart';
 
 class TodoList extends StatefulWidget {
   @override
@@ -10,13 +9,11 @@ class TodoList extends StatefulWidget {
 }
 
 class _TodoListState extends State<TodoList> {
-  List<String> todoListTitle = [];
-  List<String> todoListDate = [];
 
   void delete(int index) {
     setState(() {
-      todoListTitle.removeAt(index);
-      todoListDate.removeAt(index);
+      Get.find<Controller>().getTitle.removeAt(index);
+      Get.find<Controller>().getDate.removeAt(index);
     });
   }
 
@@ -39,23 +36,13 @@ class _TodoListState extends State<TodoList> {
               icon: Icon(Icons.star))
         ],
       ),
-      body: todoListTitle.length > 0
+      body: Get.find<Controller>().getListSize > 0
           ? ListView.builder(
-              itemCount: todoListTitle.length,
+              itemCount: Get.find<Controller>().getListSize,
               itemBuilder: (BuildContext context, int index) {
                 return Slidable(
                   actionPane: SlidableDrawerActionPane(),
                   actionExtentRatio: 0.25,
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.star,
-                      color: Colors.yellowAccent[400],
-                    ),
-                    title: Text(todoListTitle[index],
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
-                    subtitle: Text(todoListDate[index]),
-                  ),
                   secondaryActions: <Widget>[
                     IconSlideAction(
                       caption: 'edit',
@@ -71,6 +58,16 @@ class _TodoListState extends State<TodoList> {
                       onTap: () => delete(index),
                     ),
                   ],
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.star,
+                      color: Colors.yellowAccent[400],
+                    ),
+                    title: Text(Get.find<Controller>().getTitle[index],
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold)),
+                    subtitle: Text(Get.find<Controller>().getDate[index]),
+                  ),
                 );
               })
           : Center(
@@ -86,16 +83,10 @@ class _TodoListState extends State<TodoList> {
             )),
       floatingActionButton: FloatingActionButton(
           backgroundColor: Theme.of(context).primaryColor,
-          child: Icon(Icons.add),
           onPressed: () async {
-            var addText = await Get.toNamed('/add', arguments: true);
-            if (addText != null) {
-              setState(() {
-                todoListTitle.add(addText['title']);
-                todoListDate.add(addText['date']);
-              });
-            }
-          }),
+            await Get.toNamed('/add', arguments: true);
+          },
+          child: Icon(Icons.add)),
     );
   }
 }
