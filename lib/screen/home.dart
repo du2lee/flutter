@@ -10,12 +10,6 @@ class TodoList extends StatefulWidget {
 
 class _TodoListState extends State<TodoList> {
 
-  void delete(int index) {
-    setState(() {
-      Get.find<Controller>().getTitle.removeAt(index);
-      Get.find<Controller>().getDate.removeAt(index);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +49,7 @@ class _TodoListState extends State<TodoList> {
                       caption: 'delete',
                       color: Colors.red,
                       icon: Icons.delete,
-                      onTap: () => delete(index),
+                      onTap: () => Get.find<Controller>().delete(index),
                     ),
                   ],
                   child: ListTile(
@@ -63,10 +57,10 @@ class _TodoListState extends State<TodoList> {
                       Icons.star,
                       color: Colors.yellowAccent[400],
                     ),
-                    title: Text(Get.find<Controller>().getTitle[index],
+                    title: Obx(() => Text('${Get.find<Controller>().getTitle[index].value}',
                         style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold)),
-                    subtitle: Text(Get.find<Controller>().getDate[index]),
+                            fontSize: 18, fontWeight: FontWeight.bold))),
+                    subtitle: Obx(() => Text(Get.find<Controller>().getDate[index].value)),
                   ),
                 );
               })

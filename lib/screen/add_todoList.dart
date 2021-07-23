@@ -103,7 +103,7 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
   _handleDatePicker() async {
     final date = await showDatePicker(
         context: context,
-        initialDate: _date,
+        initialDate: DateTime.now(),
         firstDate: DateTime(2000),
         lastDate: DateTime(2100));
     if (date != null && date != _date) {
