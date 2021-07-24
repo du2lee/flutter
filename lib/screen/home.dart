@@ -3,14 +3,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:get/get.dart';
 import 'package:todolist/controller/controller.dart';
 
-class TodoList extends StatefulWidget {
-  @override
-  _TodoListState createState() => _TodoListState();
-}
-
-class _TodoListState extends State<TodoList> {
-
-
+class TodoList extends GetView<Controller> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,40 +23,12 @@ class _TodoListState extends State<TodoList> {
               icon: Icon(Icons.star))
         ],
       ),
-      body: Get.find<Controller>().getListSize > 0
-          ? ListView.builder(
-              itemCount: Get.find<Controller>().getListSize,
+      body: controller.getListSize > 0
+          ? Obx(() => ListView.builder(
+              itemCount: controller.getListSize,
               itemBuilder: (BuildContext context, int index) {
-                return Slidable(
-                  actionPane: SlidableDrawerActionPane(),
-                  actionExtentRatio: 0.25,
-                  secondaryActions: <Widget>[
-                    IconSlideAction(
-                      caption: 'edit',
-                      color: Colors.grey.shade200,
-                      icon: Icons.edit,
-                      onTap: () => {Get.toNamed('/add', arguments: false)},
-                      closeOnTap: false,
-                    ),
-                    IconSlideAction(
-                      caption: 'delete',
-                      color: Colors.red,
-                      icon: Icons.delete,
-                      onTap: () => Get.find<Controller>().delete(index),
-                    ),
-                  ],
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.star,
-                      color: Colors.yellowAccent[400],
-                    ),
-                    title: Obx(() => Text('${Get.find<Controller>().getTitle[index].value}',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold))),
-                    subtitle: Obx(() => Text(Get.find<Controller>().getDate[index].value)),
-                  ),
-                );
-              })
+                return plan(index);
+              }))
           : Center(
               child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -78,9 +43,38 @@ class _TodoListState extends State<TodoList> {
       floatingActionButton: FloatingActionButton(
           backgroundColor: Theme.of(context).primaryColor,
           onPressed: () async {
-            await Get.toNamed('/add', arguments: true);
+            controller.goAddPage();
           },
           child: Icon(Icons.add)),
     );
   }
+
+  Widget plan(int index) => Slidable(
+        actionPane: SlidableDrawerActionPane(),
+        actionExtentRatio: 0.25,
+        secondaryActions: <Widget>[
+          IconSlideAction(
+            caption: 'edit',
+            color: Colors.grey.shade200,
+            icon: Icons.edit,
+            onTap: () => controller.goAddPage(),
+            closeOnTap: false,
+          ),
+          IconSlideAction(
+            caption: 'delete',
+            color: Colors.red,
+            icon: Icons.delete,
+            onTap: () => controller.delete(index),
+          ),
+        ],
+        child: ListTile(
+          leading: Icon(
+            Icons.star,
+            color: Colors.yellowAccent[400],
+          ),
+          title: Obx(() => Text(controller.getTitle[index],
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+          subtitle: Obx(() => Text(controller.getDate[index])),
+        ),
+      );
 }

@@ -1,36 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:todolist/controller/controller.dart';
 
-class AddTodoListPage extends StatefulWidget {
-  bool flag = Get.arguments;
-  @override
-  _AddTodoListPageState createState() => _AddTodoListPageState();
-}
-
-class _AddTodoListPageState extends State<AddTodoListPage> {
+class AddTodoListPage extends GetView<Controller> {
   final formKey = GlobalKey<FormState>();
-  DateTime _date = DateTime.now();
-
-  final DateFormat _dateFormatter = DateFormat('MMM dd, yyyy');
-  final TextEditingController _dateController = TextEditingController(
-      text: DateFormat('MMM dd, yyyy').format(DateTime.now()));
-  TextEditingController titleController = TextEditingController();
-
-  @override
-  void dispose() {
-    _dateController.dispose();
-    titleController.dispose();
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
             title: Text(
-              widget.flag ? 'Add Plan': 'Edit Plan',
+              controller.editFlag.value ? 'Edit Plan' : 'Add Plan',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24.0,
@@ -54,7 +33,7 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                               borderRadius: BorderRadius.circular(10.0))),
                       validator: (input) =>
                           input!.trim().isEmpty ? 'Please enter a task' : null,
-                      controller: titleController,
+                      controller: controller.titleController,
                     ),
                   ),
                   Padding(
@@ -62,8 +41,8 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                     child: TextFormField(
                       readOnly:
                           true, //datePicker에서 지정한 날짜만 표시하기 위해 읽기전용으로 설정하였습니다.
-                      controller: _dateController, //date
-                      onTap: _handleDatePicker, //date 부분 클릭시 datePicker가 열립니다.
+                      controller: controller.dateController, //date
+                      onTap: () => controller.openDatePicker(context, DateTime.now()), //date 부분 클릭시 datePicker가 열립니다.
                       style: TextStyle(fontSize: 18.0),
                       decoration: InputDecoration(
                           labelText: 'Date',
@@ -84,12 +63,12 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                       child: FlatButton(
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
-                              Get.find<Controller>().add(titleController.text, _dateController.text);
+                              controller.add();
                               Get.back();
                             }
                           },
                           child: Text(
-                            widget.flag ?'ADD':'EDIT',
+                            controller.editFlag.value ?'EDIT':'ADD',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20.0,
@@ -98,19 +77,5 @@ class _AddTodoListPageState extends State<AddTodoListPage> {
                 ],
               )),
         ));
-  }
-
-  _handleDatePicker() async {
-    final date = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(2000),
-        lastDate: DateTime(2100));
-    if (date != null && date != _date) {
-      setState(() {
-        _date = date;
-      });
-      _dateController.text = _dateFormatter.format(date);
-    }
   }
 }
