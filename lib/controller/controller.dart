@@ -4,10 +4,10 @@ import 'package:intl/intl.dart';
 
 class Controller extends GetxService{
   
-  RxList<String> todoListTitle = <String>[].obs;
-  RxList<String> todoListDate = <String>[].obs;
-  RxInt planIndex = 0.obs;
+  RxList<String> todoListTitle = <String>['hi','hello'].obs;
+  RxList<String> todoListDate = <String>['duhui','looking good'].obs;
   RxBool editFlag = false.obs;
+  int planIndex = 0;
   
   TextEditingController titleController = TextEditingController();
   TextEditingController dateController = TextEditingController(
@@ -27,8 +27,13 @@ class Controller extends GetxService{
    }
 
   void add(){
-    todoListTitle.add(titleController.text);
-    todoListDate.add(dateController.text);
+    if(getEditFlag){
+      todoListTitle[planIndex] = titleController.text;
+      todoListDate[planIndex] = dateController.text;
+    } else {
+      todoListTitle.add(titleController.text);
+      todoListDate.add(dateController.text);
+    }
     Get.back();
   }
 
@@ -45,7 +50,7 @@ class Controller extends GetxService{
   }
 
   void goEditPage(int index){
-    planIndex = index.obs;
+    planIndex = index;
     editFlag = true.obs;
     dateController.text = todoListDate[index];
     titleController.text = todoListTitle[index];
