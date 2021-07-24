@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
-class Controller{
+class Controller extends GetxService{
   
   RxList todoListTitle = [].obs;
   RxList todoListDate = [].obs;
@@ -18,16 +18,18 @@ class Controller{
   List get getDate => todoListDate;
   int get getListSize => todoListTitle.length;
 
-  // @override
-  // void onClose() {
-  //   dateController.dispose();
-  //   titleController.dispose();
-  //   super.onClose();
-  // }
+  @override
+  void onClose() {
+    dateController.dispose();
+    titleController.dispose();
+    super.onClose();
+   }
 
   void add(){
     todoListTitle.add(titleController.text);
     todoListDate.add(dateController.text);
+    print(todoListTitle);
+    print(todoListDate);
     Get.back();
   }
 
