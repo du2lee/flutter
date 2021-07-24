@@ -25,7 +25,6 @@ class MyApp extends StatelessWidget {
         GetPage(name: '/', page: () => TodoList() , transition: Transition.zoom),
         GetPage(name: '/add', page: () => AddTodoListPage(), transition: Transition.zoom),
         GetPage(name: '/point', page: () => ImportantTodoListPage(), transition: Transition.zoom),
-        GetPage(name: '/edit/:title', page: () => AddTodoListPage(), transition: Transition.zoom),
       ],
     );
   }

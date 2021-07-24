@@ -9,7 +9,7 @@ class AddTodoListPage extends GetView<Controller> {
     return Scaffold(
         appBar: AppBar(
             title: Text(
-              controller.editFlag.value ? 'Edit Plan' : 'Add Plan',
+              controller.getEditFlag ? 'Edit Plan' : 'Add Plan',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24.0,
@@ -68,7 +68,7 @@ class AddTodoListPage extends GetView<Controller> {
                             }
                           },
                           child: Text(
-                            controller.editFlag.value ?'EDIT':'ADD',
+                            controller.getEditFlag ? 'EDIT':'ADD',
                             style: TextStyle(
                               color: Colors.white,
                               fontSize: 20.0,

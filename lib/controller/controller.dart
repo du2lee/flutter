@@ -4,8 +4,8 @@ import 'package:intl/intl.dart';
 
 class Controller extends GetxService{
   
-  RxList todoListTitle = [].obs;
-  RxList todoListDate = [].obs;
+  RxList<String> todoListTitle = <String>[].obs;
+  RxList<String> todoListDate = <String>[].obs;
   RxInt planIndex = 0.obs;
   RxBool editFlag = false.obs;
   
@@ -14,9 +14,10 @@ class Controller extends GetxService{
       text: DateFormat('MMM dd, yyyy').format(DateTime.now()));
   DateFormat dateFormatter = DateFormat('MMM dd, yyyy');
 
-  List get getTitle => todoListTitle;
-  List get getDate => todoListDate;
+  List<String> get getTitle => todoListTitle;
+  List<String> get getDate => todoListDate;
   int get getListSize => todoListTitle.length;
+  bool get getEditFlag => editFlag.value;
 
   @override
   void onClose() {
@@ -28,8 +29,6 @@ class Controller extends GetxService{
   void add(){
     todoListTitle.add(titleController.text);
     todoListDate.add(dateController.text);
-    print(todoListTitle);
-    print(todoListDate);
     Get.back();
   }
 
@@ -39,8 +38,18 @@ class Controller extends GetxService{
   }
 
   void goAddPage(){
-    Get.toNamed('/add');
     editFlag = false.obs;
+    dateController.text = '';
+    titleController.text = '';
+    Get.toNamed('/add');
+  }
+
+  void goEditPage(int index){
+    planIndex = index.obs;
+    editFlag = true.obs;
+    dateController.text = todoListDate[index];
+    titleController.text = todoListTitle[index];
+    Get.toNamed('/add');
   }
 
   void openDatePicker(BuildContext context, DateTime _date) async {

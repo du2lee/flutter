@@ -57,7 +57,7 @@ class TodoList extends GetView<Controller> {
             caption: 'edit',
             color: Colors.grey.shade200,
             icon: Icons.edit,
-            onTap: () => controller.goAddPage(),
+            onTap: () => controller.goEditPage(index),
             closeOnTap: false,
           ),
           IconSlideAction(
