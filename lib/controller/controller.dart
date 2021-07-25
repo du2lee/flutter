@@ -68,6 +68,11 @@ class Controller extends GetxService {
     Get.toNamed('/add');
   }
 
+  void goIptPage() {
+    Get.toNamed('/point');
+  }
+
+
   void openDatePicker(BuildContext context, DateTime _date) async {
     final date = await showDatePicker(
         context: context,
