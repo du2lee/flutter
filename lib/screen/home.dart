@@ -23,12 +23,12 @@ class TodoList extends GetView<Controller> {
               icon: Icon(Icons.star))
         ],
       ),
-      body: controller.getListSize > 0
-          ? Obx(() => ListView.builder(
+      body: Obx(() => controller.getListSize > 0
+          ?  ListView.builder(
               itemCount: controller.getListSize,
               itemBuilder: (BuildContext context, int index) {
                 return plan(index);
-              }))
+              })
           : Center(
               child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -39,7 +39,7 @@ class TodoList extends GetView<Controller> {
                 ),
                 SizedBox(height: 100)
               ],
-            )),
+            ))),
       floatingActionButton: FloatingActionButton(
           backgroundColor: Theme.of(context).primaryColor,
           onPressed: () async {
