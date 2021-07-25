@@ -36,6 +36,7 @@ class Controller extends GetxService {
 
   Future<void> add() async {
     if (getEditFlag) {
+      await DBHelper.instance.updatePlan(getPlan[planIndex]);
       getPlan[planIndex].title = titleController.text;
       getPlan[planIndex].date = dateController.text;
     } else {
@@ -62,8 +63,8 @@ class Controller extends GetxService {
   void goEditPage(int index) {
     planIndex = index;
     editFlag = true.obs;
-    dateController.text = getPlan[planIndex].title;
-    titleController.text = getPlan[planIndex].date;
+    titleController.text = getPlan[planIndex].title;
+    dateController.text = getPlan[planIndex].date;
     Get.toNamed('/add');
   }
 
