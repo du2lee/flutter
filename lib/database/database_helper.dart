@@ -36,8 +36,8 @@ class DBHelper {
   }
 
   //Create
-  Future createData(Plan plan) async {
-    final db = await database;
+  Future<int> createPlan(Plan plan) async {
+    final db = await instance.getDatabase;
     if(db != null){
       var res = await db.insert(table, plan.toMap());
       return res;
@@ -48,7 +48,7 @@ class DBHelper {
 
   //Read All
   Future<List<Map<String, dynamic>>> getAllPlans() async {
-    final db = await database;
+    final db = await instance.getDatabase;
     if(db != null){
       return await db.query(table, orderBy: '$columnId DESC');
     } else {
@@ -58,7 +58,7 @@ class DBHelper {
 
   //Delete
   Future<Future<int>> deletePlan(int id) async {
-    final db = await database;
+    final db = await instance.getDatabase;
     if(db != null){
       var res = db.delete(table, where: '$columnId = ?', whereArgs: [id],);
       return res;
@@ -69,7 +69,7 @@ class DBHelper {
 
   //Delete All
   Future<void> clearPlans() async{
-    final db = await database;
+    final db = await instance.getDatabase;
     if(db != null){
       await db.rawDelete('DELETE FROM $table');
     } else {

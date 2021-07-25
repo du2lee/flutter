@@ -72,9 +72,9 @@ class TodoList extends GetView<Controller> {
             Icons.star,
             color: Colors.yellowAccent[400],
           ),
-          title: Obx(() => Text(controller.getTitle[index],
+          title: Obx(() => Text(controller.getPlan[index].title,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
-          subtitle: Obx(() => Text(controller.getDate[index])),
+          subtitle: Obx(() => Text(controller.getPlan[index].date)),
         ),
       );
 }

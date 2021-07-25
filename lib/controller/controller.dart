@@ -1,59 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:todolist/database/database_helper.dart';
+import 'package:todolist/model/model.dart';
 
-class Controller extends GetxService{
-  
-  RxList<String> todoListTitle = <String>['hi','hello'].obs;
-  RxList<String> todoListDate = <String>['duhui','looking good'].obs;
+class Controller extends GetxService {
+  RxList<Plan> todoList = <Plan>[].obs;
   RxBool editFlag = false.obs;
   int planIndex = 0;
-  
+
   TextEditingController titleController = TextEditingController();
   TextEditingController dateController = TextEditingController(
       text: DateFormat('MMM dd, yyyy').format(DateTime.now()));
   DateFormat dateFormatter = DateFormat('MMM dd, yyyy');
 
-  List<String> get getTitle => todoListTitle;
-  List<String> get getDate => todoListDate;
-  int get getListSize => todoListTitle.length;
+  List<Plan> get getPlan => todoList;
+  int get getListSize => todoList.length;
   bool get getEditFlag => editFlag.value;
 
+  @override
+  void onInit(){
+    DBHelper.instance.getAllPlans().then((value) => 
+      value.forEach((element) {
+        todoList.add(Plan(id: element['id'], title: element['title'], date: element['date']));
+      }));
+      super.onInit();
+  }
+  
   @override
   void onClose() {
     dateController.dispose();
     titleController.dispose();
     super.onClose();
-   }
+  }
 
-  void add(){
-    if(getEditFlag){
-      todoListTitle[planIndex] = titleController.text;
-      todoListDate[planIndex] = dateController.text;
+  Future<void> add() async {
+    if (getEditFlag) {
+      getPlan[planIndex].title = titleController.text;
+      getPlan[planIndex].date = dateController.text;
     } else {
-      todoListTitle.add(titleController.text);
-      todoListDate.add(dateController.text);
+      var id = await DBHelper.instance.createPlan(
+          Plan(title: titleController.text, date: dateController.text));
+      todoList.add(
+          Plan(id: id, title: titleController.text, date: dateController.text));
     }
     Get.back();
   }
 
-  void delete(int index) {
-      todoListTitle.removeAt(index);
-      todoListDate.removeAt(index);
+  Future<void> delete(int index) async {
+    await DBHelper.instance.deletePlan(todoList[index].id!);
+    todoList.removeAt(index);
   }
 
-  void goAddPage(){
+  void goAddPage() {
     editFlag = false.obs;
     dateController.text = '';
     titleController.text = '';
     Get.toNamed('/add');
   }
 
-  void goEditPage(int index){
+  void goEditPage(int index) {
     planIndex = index;
     editFlag = true.obs;
-    dateController.text = todoListDate[index];
-    titleController.text = todoListTitle[index];
+    dateController.text = getPlan[planIndex].title;
+    titleController.text = getPlan[planIndex].date;
     Get.toNamed('/add');
   }
 
@@ -64,9 +74,8 @@ class Controller extends GetxService{
         firstDate: DateTime(2000),
         lastDate: DateTime(2100));
     if (date != null && date != _date) {
-        _date = date;
+      _date = date;
       dateController.text = dateFormatter.format(date);
     }
   }
-
 }
