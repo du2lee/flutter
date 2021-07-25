@@ -36,9 +36,9 @@ class Controller extends GetxService {
 
   Future<void> add() async {
     if (getEditFlag) {
-      await DBHelper.instance.updatePlan(getPlan[planIndex]);
       getPlan[planIndex].title = titleController.text;
       getPlan[planIndex].date = dateController.text;
+      await DBHelper.instance.updatePlan(todoList[planIndex]);
     } else {
       var id = await DBHelper.instance.createPlan(
           Plan(title: titleController.text, date: dateController.text));
