@@ -24,7 +24,7 @@ class Controller extends GetxService {
       value.forEach((element) {
         todoList.add(Plan(id: element['id'], title: element['title'], date: element['date']));
       }));
-      super.onInit();
+    super.onInit();
   }
   
   @override

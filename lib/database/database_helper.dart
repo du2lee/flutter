@@ -4,7 +4,7 @@ import 'package:todolist/model/model.dart';
 
 class DBHelper {
   static const dbName = 'plan.db';
-  static const table = 'plan';
+  static const table = 'Plan';
   static const columnId = 'id';
   static const columnTitle = 'title';
   static const columnDate = 'date';
@@ -29,7 +29,7 @@ class DBHelper {
           CREATE TABLE $table(
             $columnId INTEGER PRIMARY KEY AUTOINCREMENT,
             $columnTitle TEXT NOT NULL,
-            $columnDate TEXT NOT NULL,
+            $columnDate TEXT NOT NULL
           )
         ''');
     }, onUpgrade: (db, oldVersion, newVersion) {});
