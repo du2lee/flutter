@@ -7,6 +7,8 @@ import 'package:todolist/model/model.dart';
 class Controller extends GetxService {
   RxList<Plan> todoList = <Plan>[].obs;
   RxBool editFlag = false.obs;
+  RxList iptFlag = [].obs;
+  RxList<Plan> iptList = <Plan>[].obs;
   int planIndex = 0;
 
   TextEditingController titleController = TextEditingController();
@@ -15,18 +17,23 @@ class Controller extends GetxService {
   DateFormat dateFormatter = DateFormat('MMM dd, yyyy');
 
   List<Plan> get getPlan => todoList;
+  List<Plan> get getIptPlan => iptList;
   int get getListSize => todoList.length;
+  int get getSetSize => iptList.length;
   bool get getEditFlag => editFlag.value;
 
   @override
-  void onInit(){
-    DBHelper.instance.getAllPlans().then((value) => 
-      value.forEach((element) {
-        todoList.add(Plan(id: element['id'], title: element['title'], date: element['date']));
-      }));
+  void onInit() {
+    DBHelper.instance.getAllPlans().then((value) => value.forEach((element) {
+          todoList.add(Plan(
+              id: element['id'],
+              title: element['title'],
+              date: element['date']));
+          iptFlag.add(false);
+        }));
     super.onInit();
   }
-  
+
   @override
   void onClose() {
     dateController.dispose();
@@ -72,7 +79,6 @@ class Controller extends GetxService {
     Get.toNamed('/point');
   }
 
-
   void openDatePicker(BuildContext context, DateTime _date) async {
     final date = await showDatePicker(
         context: context,
@@ -82,6 +88,18 @@ class Controller extends GetxService {
     if (date != null && date != _date) {
       _date = date;
       dateController.text = dateFormatter.format(date);
+    }
+  }
+
+  void pressStar(int index) {
+    if (iptFlag[index]) {
+      iptFlag[index] = false;
+    } else {
+      iptFlag[index] = true;
+      iptList.add(Plan(
+          id: todoList[index].id,
+          title: todoList[index].title,
+          date: todoList[index].date));
     }
   }
 }

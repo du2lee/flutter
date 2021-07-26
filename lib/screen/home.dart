@@ -17,14 +17,14 @@ class TodoList extends GetView<Controller> {
         actions: <Widget>[
           //중요한 계획들만
           IconButton(
-              onPressed: () {
-                Get.toNamed('/point');
+              onPressed: () async {
+                controller.goIptPage();
               },
               icon: Icon(Icons.star))
         ],
       ),
       body: Obx(() => controller.getListSize > 0
-          ?  ListView.builder(
+          ? ListView.builder(
               itemCount: controller.getListSize,
               itemBuilder: (BuildContext context, int index) {
                 return plan(index);
@@ -67,14 +67,21 @@ class TodoList extends GetView<Controller> {
             onTap: () => controller.delete(index),
           ),
         ],
-        child: ListTile(
-          leading: Icon(
-            Icons.star,
-            color: Colors.yellowAccent[400],
-          ),
-          title: Obx(() => Text(controller.getPlan[index].title,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
-          subtitle: Obx(() => Text(controller.getPlan[index].date)),
-        ),
+        child: Obx(() => ListTile(
+              leading: IconButton(
+                onPressed: () async {
+                  controller.pressStar(index);
+                },
+                icon: controller.iptFlag[index]
+                    ? Icon(Icons.star)
+                    : Icon(Icons.star_border),
+                color: controller.iptFlag[index]
+                    ? Colors.yellowAccent[400]
+                    : Colors.grey[400],
+              ),
+              title: Obx(() => Text(controller.getPlan[index].title,
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold))),
+              subtitle: Obx(() => Text(controller.getPlan[index].date)),
+            )),
       );
 }
